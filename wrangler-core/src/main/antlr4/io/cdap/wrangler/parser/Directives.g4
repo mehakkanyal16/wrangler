@@ -38,8 +38,10 @@ directive
      codeblock | identifier | macro | text | number | bool | column
      | colList | numberList | boolList | stringList
      | numberRanges | properties
+     | BYTE_SIZE | TIME_DURATION   // Add BYTE_SIZE and TIME_DURATION here
    )*?
- ;
+;
+
 
 // Conditional if-else directive block
 ifStatement
@@ -137,7 +139,7 @@ value
  | Column
  | Bool
  | BYTE_SIZE
- | TIME_DURATION
+ | TIME_DURATION   // This allows BYTE_SIZE and TIME_DURATION to be used in numberRange
  ;
 
 // External command syntax using '!'
