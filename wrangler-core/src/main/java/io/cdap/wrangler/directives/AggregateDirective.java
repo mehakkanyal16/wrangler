@@ -144,7 +144,7 @@ public class AggregateDirective implements Directive, Executor<List<Row>, List<R
     }
 
     @Override
-
+            
     public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException {
         if (rows == null) {
             throw new DirectiveExecutionException("Input rows cannot be null");

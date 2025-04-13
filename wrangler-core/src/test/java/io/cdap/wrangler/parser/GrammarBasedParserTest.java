@@ -21,6 +21,7 @@ import io.cdap.wrangler.api.CompileStatus;
 import io.cdap.wrangler.api.Compiler;
 import io.cdap.wrangler.api.Directive;
 import io.cdap.wrangler.api.RecipeParser;
+import io.cdap.wrangler.api.DirectiveParseException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -73,6 +74,54 @@ public class GrammarBasedParserTest {
     RecipeParser parser = TestingRig.parse(recipe);
     List<Directive> directives = parser.parse();
     Assert.assertEquals(0, directives.size());
+  }
+
+  @Test
+  public void testByteSizeAndTimeDurationParsing() throws Exception {
+    // Test valid byte size and time duration in recipes
+    String recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:MB time_unit:minutes";
+    RecipeParser parser = TestingRig.parse(recipe);
+    List<Directive> directives = parser.parse();
+    Assert.assertNotNull(directives);
+    
+    // Test with different units
+    recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:GB time_unit:hours";
+    parser = TestingRig.parse(recipe);
+    directives = parser.parse();
+    Assert.assertNotNull(directives);
+    
+    // Test with average aggregation
+    recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time time_aggregation:average";
+    parser = TestingRig.parse(recipe);
+    directives = parser.parse();
+    Assert.assertNotNull(directives);
+    
+    // Test invalid byte size
+    String invalidByteSize = "aggregate size_column:invalid_bytes time_column:duration total_size_column:total_bytes total_time_column:total_time";
+    try {
+      TestingRig.parse(invalidByteSize).parse();
+      Assert.fail("Expected DirectiveParseException for invalid byte size");
+    } catch (DirectiveParseException e) {
+      // Expected
+    }
+    
+    // Test invalid time duration
+    String invalidTime = "aggregate size_column:bytes time_column:invalid_time total_size_column:total_bytes total_time_column:total_time";
+    try {
+      TestingRig.parse(invalidTime).parse();
+      Assert.fail("Expected DirectiveParseException for invalid time duration");
+    } catch (DirectiveParseException e) {
+      // Expected
+    }
+    
+    // Test invalid unit
+    String invalidUnit = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:invalid";
+    try {
+      TestingRig.parse(invalidUnit).parse();
+      Assert.fail("Expected DirectiveParseException for invalid unit");
+    } catch (DirectiveParseException e) {
+      // Expected
+    }
   }
 
 }
