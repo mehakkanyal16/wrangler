@@ -22,6 +22,7 @@ import io.cdap.wrangler.api.SourceInfo;
 import io.cdap.wrangler.api.Triplet;
 import io.cdap.wrangler.api.parser.Bool;
 import io.cdap.wrangler.api.parser.BoolList;
+import io.cdap.wrangler.api.parser.ByteSize;
 import io.cdap.wrangler.api.parser.ColumnName;
 import io.cdap.wrangler.api.parser.ColumnNameList;
 import io.cdap.wrangler.api.parser.DirectiveName;
@@ -148,6 +149,7 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+  
   /**
    * A Directive can include number ranges like start:end=value[,start:end=value]*. This
    * visitor method allows you to collect all the number ranges and create a token type
@@ -316,6 +318,16 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     builder.addToken(new TextList(strs));
     return builder;
   }
+  @Override
+public RecipeSymbol.Builder visitByteSize(DirectivesParser.ByteSizeContext ctx) {
+    // Extract byte size information from the context
+    String byteSizeText = ctx.getText();
+
+    // Add the extracted byte size token to the builder
+    builder.addToken(new ByteSize(byteSizeText));
+
+    return builder;
+}
 
   private SourceInfo getOriginalSource(ParserRuleContext ctx) {
     int a = ctx.getStart().getStartIndex();
