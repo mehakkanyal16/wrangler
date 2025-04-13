@@ -31,7 +31,7 @@ public class ByteSize implements Token {
     private static final Pattern SIZE_PATTERN = Pattern.compile("([0-9]+)(KB|MB|GB|TB)?", Pattern.CASE_INSENSITIVE);
 
     // Constructor to parse the byte size string (e.g., "10KB", "100MB")
-    public ByteSize(String value) {
+    public ByteSize(String value) { 
         // Check if the value is null or empty and throw an exception if it is.
         if (value == null || value.isEmpty()) {
             throw new IllegalArgumentException("Byte size cannot be null or empty");

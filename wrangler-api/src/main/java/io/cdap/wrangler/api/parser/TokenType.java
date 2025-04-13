@@ -43,11 +43,21 @@ import java.io.Serializable;
  */
 @PublicEvolving
 public enum TokenType implements Serializable {
+    /**
+   * Represents a token that is a byte size value (e.g., 10KB, 512MB).
+   */
+  BYTE_SIZE,
+
+  /**
+   * Represents a token that is a time duration value (e.g., 150ms, 2h).
+   */
+  TIME_DURATION,
   /**
    * Represents the enumerated type for the object {@code DirectiveName} type.
    * This type is associated with the token that is recognized as a directive
    * name within the recipe.
    */
+  
   DIRECTIVE_NAME,
 
   /**
@@ -153,13 +163,6 @@ public enum TokenType implements Serializable {
    * on characters that can be present in a string.
    */
   IDENTIFIER,
-    /**
-   * Represents a token that is a byte size value (e.g., 10KB, 512MB).
-   */
-  BYTE_SIZE,
-
-  /**
-   * Represents a token that is a time duration value (e.g., 150ms, 2h).
-   */
-  TIME_DURATION
+  
+  
 }

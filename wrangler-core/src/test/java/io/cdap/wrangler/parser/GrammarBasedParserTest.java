@@ -35,12 +35,12 @@ public class GrammarBasedParserTest {
   @Test
   public void testBasic() throws Exception {
     String[] recipe = new String[] {
-      "#pragma version 2.0;",
-      "rename :col1 :col2",
-      "parse-as-csv :body ',' true;",
-      "#pragma load-directives text-reverse, text-exchange;",
-      "${macro} ${macro_2}",
-      "${macro_${test}}"
+        "#pragma version 2.0;",
+        "rename :col1 :col2",
+        "parse-as-csv :body ',' true;",
+        "#pragma load-directives text-reverse, text-exchange;",
+        "${macro} ${macro_2}",
+        "${macro_${test}}"
     };
 
     RecipeParser parser = TestingRig.parse(recipe);
@@ -51,13 +51,13 @@ public class GrammarBasedParserTest {
   @Test
   public void testLoadableDirectives() throws Exception {
     String[] recipe = new String[] {
-      "#pragma version 2.0;",
-      "#pragma load-directives text-reverse, text-exchange;",
-      "rename col1 col2",
-      "parse-as-csv body , true",
-      "text-reverse :body;",
-      "test prop: { a='b', b=1.0, c=true};",
-      "#pragma load-directives test-change,text-exchange, test1,test2,test3,test4;"
+        "#pragma version 2.0;",
+        "#pragma load-directives text-reverse, text-exchange;",
+        "rename col1 col2",
+        "parse-as-csv body , true",
+        "text-reverse :body;",
+        "test prop: { a='b', b=1.0, c=true};",
+        "#pragma load-directives test-change,text-exchange, test1,test2,test3,test4;"
     };
 
     Compiler compiler = new RecipeCompiler();
@@ -68,7 +68,7 @@ public class GrammarBasedParserTest {
   @Test
   public void testCommentOnlyRecipe() throws Exception {
     String[] recipe = new String[] {
-      "// test"
+        "// test"
     };
 
     RecipeParser parser = TestingRig.parse(recipe);
@@ -80,44 +80,44 @@ public class GrammarBasedParserTest {
   public void testByteSizeAndTimeDurationParsing() throws Exception {
     // Test valid byte size and time duration in recipes
     String recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:MB time_unit:minutes";
-    RecipeParser parser = TestingRig.parse(recipe);
+    RecipeParser parser = TestingRig.parse(new String[] { recipe });
     List<Directive> directives = parser.parse();
     Assert.assertNotNull(directives);
-    
+
     // Test with different units
     recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:GB time_unit:hours";
-    parser = TestingRig.parse(recipe);
+    parser = TestingRig.parse(new String[] { recipe });
     directives = parser.parse();
     Assert.assertNotNull(directives);
-    
+
     // Test with average aggregation
     recipe = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time time_aggregation:average";
-    parser = TestingRig.parse(recipe);
+    parser = TestingRig.parse(new String[] { recipe });
     directives = parser.parse();
     Assert.assertNotNull(directives);
-    
+
     // Test invalid byte size
     String invalidByteSize = "aggregate size_column:invalid_bytes time_column:duration total_size_column:total_bytes total_time_column:total_time";
     try {
-      TestingRig.parse(invalidByteSize).parse();
+      TestingRig.parse(new String[] { invalidByteSize }).parse();
       Assert.fail("Expected DirectiveParseException for invalid byte size");
     } catch (DirectiveParseException e) {
       // Expected
     }
-    
+
     // Test invalid time duration
     String invalidTime = "aggregate size_column:bytes time_column:invalid_time total_size_column:total_bytes total_time_column:total_time";
     try {
-      TestingRig.parse(invalidTime).parse();
+      TestingRig.parse(new String[] { invalidTime }).parse();
       Assert.fail("Expected DirectiveParseException for invalid time duration");
     } catch (DirectiveParseException e) {
       // Expected
     }
-    
+
     // Test invalid unit
     String invalidUnit = "aggregate size_column:bytes time_column:duration total_size_column:total_bytes total_time_column:total_time size_unit:invalid";
     try {
-      TestingRig.parse(invalidUnit).parse();
+      TestingRig.parse(new String[] { invalidUnit }).parse();
       Assert.fail("Expected DirectiveParseException for invalid unit");
     } catch (DirectiveParseException e) {
       // Expected
