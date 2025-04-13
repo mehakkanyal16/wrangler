@@ -37,8 +37,7 @@ directive
    (
      codeblock | identifier | macro | text | number | bool | column
      | colList | numberList | boolList | stringList
-     | numberRanges | properties
-     | BYTE_SIZE | TIME_DURATION   // Add BYTE_SIZE and TIME_DURATION here
+     | numberRanges | properties | byteSizeArg | timeDurationArg
    )*?
 ;
 
@@ -165,6 +164,16 @@ text
 // Number literal
 number
  : Number
+ ;
+
+// Byte size argument (e.g., 10KB, 100MB, 1GB)
+byteSizeArg
+ : BYTE_SIZE
+ ;
+
+// Time duration argument (e.g., 5s, 2m, 1h)
+timeDurationArg
+ : TIME_DURATION
  ;
 
 // Byte size literal (e.g., 10KB, 5MB)
