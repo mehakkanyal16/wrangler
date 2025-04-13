@@ -1,0 +1,92 @@
+# ANTLR Grammar Modification (Directives.g4)
+
+## 1. Custom Lexer Rule for Byte Sizes:
+How do I define a custom lexer rule in ANTLR to match byte sizes (e.g., 10KB, 1.5MB) and ensure the rule is **case-insensitive**?
+
+## 2. Parsing Time Durations:
+Suggest robust ANTLR grammar rules for parsing time durations like `150ms`, `2.5s`, `1min`. The grammar should support:
+- Decimals (e.g., 1.5, 2.5)
+- Common units (ms, s, min, h, d)
+- Proper handling of time units in various combinations.
+
+## 3. Update Value Rule for BYTE_SIZE and TIME_DURATION Tokens:
+Update my ANTLR **value rule** to include custom **BYTE_SIZE** and **TIME_DURATION** tokens, ensuring correct parsing and integration into the main grammar.
+
+---
+
+# Token Class Implementation (Java: ByteSize.java, TimeDuration.java)
+
+## 4. ByteSize Java Class:
+Generate a Java class **ByteSize** that parses strings like `10KB`, `1.5MB` and converts them into **bytes**. The class should:
+- Handle unit suffixes such as KB, MB, GB, etc.
+- Properly handle decimal precision (e.g., 1.5MB should be handled accurately).
+
+## 5. TimeDuration Java Class:
+Design a **TimeDuration** Java class that supports parsing inputs like `200ms`, `1.5s`, or `3min`, and converts them into milliseconds or nanoseconds with appropriate conversion logic based on different time units.
+
+---
+
+# API and TokenType Integration
+
+## 6. Register Custom Token Types:
+Show how to register new **custom token types** (BYTE_SIZE and TIME_DURATION) in a **token type enum**. Ensure that the tokens integrate seamlessly into the Wrangler parser.
+
+## 7. Update UsageDefinition for Directives:
+Update the **UsageDefinition** for a directive to:
+- Accept **BYTE_SIZE** and **TIME_DURATION** tokens.
+- Handle **optional arguments** for units and conversion logic.
+
+---
+
+# Core Parser Updates
+
+## 8. Visitor Methods for Custom Tokens:
+How to add **visitor methods** for custom token types (BYTE_SIZE, TIME_DURATION) in a parser? These methods should:
+- Extract text values.
+- Return instances of corresponding Java token classes.
+
+## 9. Wrangler Value Parser Update:
+Modify the **Wrangler value parser** to:
+- Accept and correctly convert **BYTE_SIZE** and **TIME_DURATION** tokens.
+- Return instances of the corresponding classes (ByteSize, TimeDuration) within the `TokenGroup`.
+
+---
+
+# AggregateStats Directive Implementation
+
+## 10. Design Aggregate Directive:
+Create a custom **Wrangler directive** that:
+- Aggregates byte size and time duration from columns.
+- Outputs total values in user-specified units (e.g., MB, seconds).
+
+## 11. Execute Logic for Aggregate Directive:
+Design the **execute** logic for the aggregate directive to:
+- Read column values.
+- Store running totals in **ExecutorContext**.
+- Convert values to user-specified units before emitting the final result row.
+
+## 12. Optional Arguments for Aggregation Type and Units:
+What’s the best approach to support **optional arguments** for:
+- Aggregation type (e.g., total or average).
+- Output units (e.g., MB, GB, seconds) in the **Wrangler directive**.
+
+---
+
+# Unit Testing
+
+## 13. JUnit Test Cases for ByteSize and TimeDuration Classes:
+Generate **JUnit test cases** for the **ByteSize** and **TimeDuration** classes, ensuring coverage of edge cases like:
+- Lowercase units (e.g., `kb` instead of `KB`).
+- Zero values (e.g., `0MB`, `0ms`).
+- Invalid strings (e.g., `10XYZ`).
+- Large inputs (e.g., `1TB`, `1000000s`).
+
+## 14. Wrangler TestingRig for Aggregate Directive:
+Write tests using Wrangler’s **TestingRig** to:
+- Simulate a recipe using the **aggregate-stats** directive.
+- Validate aggregate values with **tolerance-based assertions**.
+
+## 15. Invalid Token Tests for BYTE_SIZE and TIME_DURATION:
+Generate test cases that cover invalid tokens for **BYTE_SIZE** and **TIME_DURATION** to ensure:
+- The grammar and parser reject incorrect inputs.
+- Proper error handling and validation in the Wrangler system.
